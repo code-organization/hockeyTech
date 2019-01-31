@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="rampageInput"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+
+<script>
+
+var $j= jQuery.noConflict();
+console.log("Rosalie");
+$j(document).ready(function($) {
+
+console.log("before JSON");
+    $.ajaxSetup({cache:false});
+    $.getJSON("http://www.nba.com/.element/media/2.0/teamsites/spurs/Rosalie/rampage-schedule1.json",
+
+    function loadRampageInfo(data){
+        console.log("11111111");
+    var rampageInformation = data;
+    var scheduleInfo = data.SiteKit.Schedule;
+
+    scheduleInfo.forEach(function(content, i){
+        var gameDateEach = content.date_time_played;
+        var today = new Date();
+        var homegame = content.home_team_city;
+        var formattedDate = gameDateEach.substring(11,13);
+        var gameHour = content.scheduled_time.substring(0,7);
+        var gameScheduleDate1 = new Date(gameDateEach);
+        var dateDays = gameDateEach.substring(8,10);
+        console.log(dateDays);
+        var minuteSting = gameDateEach.substring(14,16);
+        var opponentInfo = content.visiting_team_name;
+        var opponentCode = content.visiting_team_code;
+
+        var dayOfWeek1 = new Date(gameDateEach);
+        var day1 = dayOfWeek1.getDay();
+
+        var weekday = new Array(7);
+        weekday[0] = "SUNDAY";
+        weekday[1] = "MONDAY";
+        weekday[2] = "TUESDAY";
+        weekday[3] = "WEDNESDAY";
+        weekday[4] = "THURSDAY";
+        weekday[5] = "FRIDAY";
+        weekday[6] = "SATURDAY";
+
+        var inputDate1 = weekday[day1];
+
+        var monthName = new Array(12);
+        monthName [0] = "January";
+        monthName [1] = "February";
+        monthName[2] = "March";
+        monthName[3] = "April";
+        monthName[4] = "May";
+        monthName[5] = "June";
+        monthName[6] = "July";
+        monthName[7] = "August";
+        monthName[8] = "September";
+        monthName[9] = "October";
+        monthName[10] = "November";
+        monthName[11] = "December";
+
+        var inputMonth = monthName[day1];
+        var correctMonth = monthName[dayOfWeek1.getMonth()];
+
+
+
+
+
+
+        var markup = " ";
+
+        if(today < gameScheduleDate1){
+            if(homegame == "San Antonio") {
+
+                console.log(inputMonth);
+
+                markup +="<div class='row gamerow home'>";
+                markup +="<div class='col-sm-3 col-xs-4 day'>";
+                markup += inputDate1+ ", " + correctMonth + " " + dateDays+ '<br>' + gameHour;
+                markup += "</div>";
+                markup += "<div class='col-sm-3 col-xs-4 logoimg'>";
+                markup += '<img src="http://www.nba.com/.element/media/2.0/teamsites/spurs/Rosalie/img/rampage/' + opponentCode + '.png" >';
+
+                markup += "</div>";
+                markup += "<div class='col-sm-3 opponent'>";
+                markup += opponentInfo;
+                markup += "</div>";
+                markup += "<div class='col-sm-3 col-xs-4'><a target='_blank' class='btn btn-success'>Tickets</a>";
+                markup += "</div>";
+
+                markup += "</div>";
+
+                $("#rampageInput").append(markup);
+
+            }
+        }
+
+    });
+
+
+
+
+    });
+});
+
+
+</script>
+
+</body>
+</html>
